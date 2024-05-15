@@ -10,3 +10,16 @@ def status():
     """returns status"""
     response = jsonify({"status": "OK"})
     return jsonify({"status": "OK"})
+
+
+@app_views.route('/stats', methods=['GET'], strict_slashes=False)
+def stats():
+    """returns stats"""
+    from models import storage
+    classes = {"Amenity": "amenities", "City": "cities",
+               "Place": "places", "Review": "reviews",
+               "State": "states", "User": "users"}
+    stats = {}
+    for key, value in classes.items():
+        stats[value] = storage.count(key)
+    return jsonify(stats)
